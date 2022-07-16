@@ -127,4 +127,7 @@ plt.ylabel('Saudi Oil Production',fontsize=18)
 plt.legend(['ground_truth','prediction'])
 plt.show()
 
+model_path = h2o.save_model(model=leader_model, path="/content/mymodel", force=True)
+saved_model = h2o.load_model(model_path)
+
 h2o.cluster().shutdown()
