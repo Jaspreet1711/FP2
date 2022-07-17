@@ -116,6 +116,24 @@ from scipy import stats
 slope, intercept, r_value, p_value, std_err = stats.linregress(x=df_results['predictions'],y=df_results['ground_truth'])
 print('R2 = ',r_value*r_value)
 
+def wmape_gr(df_results, ground_truth, predictions):
+    # we take two series and calculate an output a wmape from it
+    # make a series called mape
+    se_mape = abs(df_results[ground_truth] - df_results[predictions]) / df_results[ground_truth]
+    # get a float of the sum of the actual
+    ft_actual_sum = df_results[ground_truth].sum()
+    # get a series of the multiple of the actual & the mape
+    se_actual_prod_mape = df_results[ground_truth] * se_mape
+    # summate the prod of the actual and the mape
+    ft_actual_prod_mape_sum = se_actual_prod_mape.sum()
+    # float: wmape of forecast
+    ft_wmape_forecast = ft_actual_prod_mape_sum / ft_actual_sum
+    # return a float
+
+    return ft_wmape_forecast
+  
+wmape_gr(df_results,'ground_truth','predictions')
+  
 plt.scatter(x=df_results['predictions'],y=df_results['ground_truth'],s=1)
 plt.xlabel('predictions',fontsize=18)
 plt.ylabel('ground_truth',fontsize=18)
